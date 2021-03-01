@@ -14,5 +14,8 @@ async function bootstrap() {
   app.listen(() => {
     console.log('Microservice is listening');
   });
+
+  const app_heroku = await NestFactory.create(AppModule);
+  await app_heroku.listen(process.env.PORT || 4000);
 }
 bootstrap();
