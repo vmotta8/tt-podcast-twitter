@@ -4,10 +4,12 @@ import { Injectable } from '@nestjs/common';
 import { Group } from './dtos/group';
 import { Tweet } from './dtos/tweet';
 import { TweetsHelper } from './helpers/format_tweets';
+import * as dotenv from 'dotenv';
+dotenv.config();
 
 @Injectable()
 export class TweetsService {
-  client = new Twitter({
+  private client = new Twitter({
     consumer_key: process.env.TWITTER_CONSUMER_KEY,
     consumer_secret: process.env.TWITTER_CONSUMER_SECRET,
     access_token_key: process.env.TWITTER_ACCESS_TOKEN_KEY,
