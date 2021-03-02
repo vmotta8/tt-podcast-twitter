@@ -23,22 +23,27 @@ export class TweetsService {
       const users = group.users;
 
       for (const user of users) {
-        let tweets = await this.client.get('statuses/user_timeline', {
-          screen_name: user,
-          count: 200,
-          tweet_mode: 'extended',
-          include_entities: 1,
-          include_extended_entities: 1,
-        });
+        try {
+          let tweets = await this.client.get('statuses/user_timeline', {
+            screen_name: user,
+            count: 200,
+            tweet_mode: 'extended',
+            include_entities: 1,
+            include_extended_entities: 1,
+          });
 
-        tweets = TweetsHelper.rtFilter(tweets);
-        const amount = TweetsHelper.sumTweets(tweets);
-        const engagement = TweetsHelper.sumEngagement(tweets);
-        tweets = TweetsHelper.dateFilter(tweets);
+          tweets = TweetsHelper.rtFilter(tweets);
+          const amount = TweetsHelper.sumTweets(tweets);
+          const engagement = TweetsHelper.sumEngagement(tweets);
+          tweets = TweetsHelper.dateFilter(tweets);
 
-        tweets = TweetsHelper.usefulTweets(tweets, engagement, amount);
+          tweets = TweetsHelper.usefulTweets(tweets, engagement, amount);
 
-        allTweets = allTweets.concat(tweets);
+          allTweets = allTweets.concat(tweets);
+        } catch (err) {
+          console.log(user);
+          console.log(err);
+        }
       }
 
       allTweets.sort(
